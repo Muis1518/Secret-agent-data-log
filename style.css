@@ -1,0 +1,286 @@
+
+
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: white;
+}
+
+header {
+  padding: 20px 40px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-button {
+  background: #e30613;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.reset-button {
+  background: none;
+  border: 2px solid #e30613;
+  color: #e30613;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  padding: 40px;
+}
+
+#timeline {
+  position: relative;
+  padding-left: 80px;
+}
+
+#timeline::before {
+  content: "";
+  position: absolute;
+  left: 35px;
+  top: 0;
+  width: 12px;
+  height: 100%;
+  background: #e30613;
+  border-radius: 999px;
+}
+
+.date-label {
+  background: #e30613;
+  color: white;
+  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: 999px;
+  display: inline-block;
+  margin: 40px 0 20px;
+  margin-left: -20px;
+}
+
+.entry {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.thumb {
+  width: 220px;
+  background: #111;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.thumb img {
+  width: 100%;
+  display: block;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  max-width: 360px;
+}
+
+/* Ranking */
+.ranking {
+  background: #fafafa;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.ranking li {
+  list-style: none;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e30613;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+/* Form */
+.form {
+  max-width: 500px;
+  margin: 40px auto;
+  display: grid;
+  gap: 12px;
+}
+
+.form input,
+.form textarea,
+.form button {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.form button {
+  background: linear-gradient(90deg,#c00,#e30613);
+  border: none;
+  color: white;
+  border-radius: 999px;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+/* body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: white;
+}
+
+header {
+  padding: 20px 40px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-button {
+  background: #e30613;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.reset-button {
+  background: none;
+  border: 2px solid #e30613;
+  color: #e30613;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  padding: 40px;
+}
+
+#timeline {
+  position: relative;
+  padding-left: 80px;
+}
+
+#timeline::before {
+  content: "";
+  position: absolute;
+  left: 35px;
+  top: 0;
+  width: 12px;
+  height: 100%;
+  background: #e30613;
+  border-radius: 999px;
+}
+
+.date-label {
+  background: #e30613;
+  color: white;
+  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: 999px;
+  display: inline-block;
+  margin: 40px 0 20px;
+  margin-left: -20px;
+}
+
+.entry {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.thumb {
+  width: 220px;
+  background: #111;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.thumb img {
+  width: 100%;
+  display: block;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  max-width: 360px;
+}
+
+Ranking */
+/* .ranking {
+  background: #fafafa;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.ranking li {
+  list-style: none;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+} */
+
+/* Form */
+/* .form {
+  max-width: 500px;
+  margin: 40px auto;
+  display: grid;
+  gap: 12px;
+}
+
+.form input,
+.form textarea,
+.form button {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.form button {
+  background: linear-gradient(90deg,#c00,#e30613);
+  border: none;
+  color: white;
+  border-radius: 999px;
+  font-weight: bold;
+} */
