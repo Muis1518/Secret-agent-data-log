@@ -1,9 +1,19 @@
-FROM nginx:1.27-alpine
+FROM node:20-bookworm-slim
 
-# Serve the static website with nginx
-COPY index.html /usr/share/nginx/html/index.html
-COPY add.html /usr/share/nginx/html/add.html
-COPY script.js /usr/share/nginx/html/script.js
-COPY style.css /usr/share/nginx/html/style.css
+WORKDIR /app
 
-EXPOSE 80
+COPY package.json /app/package.json
+COPY package-lock.json /app/package-lock.json
+RUN npm ci --omit=dev
+
+COPY index.html /app/index.html
+COPY add.html /app/add.html
+COPY script.js /app/script.js
+COPY style.css /app/style.css
+COPY server.js /app/server.js
+
+RUN mkdir -p /app/data /app/uploads
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

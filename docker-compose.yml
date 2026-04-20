@@ -1,0 +1,18 @@
+services:
+  web:
+    container_name: secret-agent-data-log
+    build:
+      context: .
+    image: ${IMAGE_NAME:-secret-agent-data-log:local}
+    ports:
+      - "${APP_PORT:-8081}:3000"
+    volumes:
+      - db_data:/app/data
+      - uploads_data:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  uploads_data:
+
+
