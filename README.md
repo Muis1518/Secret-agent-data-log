@@ -1,5 +1,10 @@
 # Secret-agent-data-log
-Hier is te alles te zien wat de secret agent vind en wat het er mee heeft gedaan 
+
+Alle gebruikers zien nu dezelfde data:
+- leaks staan in een SQLite database
+- uploads (afbeeldingen) staan als losse bestanden op schijf
+
+Daardoor werkt de app niet meer met localStorage per browser, maar centraal via een API.
 
 ## Docker
 
@@ -12,27 +17,45 @@ docker build -t secret-agent-data-log .
 Run container:
 
 ```bash
-docker run --rm -p 8080:80 secret-agent-data-log
+docker run --rm -p 8080:3000 secret-agent-data-log
 ```
 
 Open daarna: http://localhost:8080
 
-## GitHub Container Registry (GHCR)
+## Docker Compose
 
-Er staat nu een workflow in `.github/workflows/publish-ghcr.yml`.
-
-Deze workflow:
-- Bouwt de Docker image bij push naar `main` of `master`
-- Bouwt en pusht ook op tags zoals `v1.0.0`
-- Publiceert de image naar GHCR als:
-
-```text
-ghcr.io/<owner>/secret-agent-data-log
-```
-
-Voorbeelden na een succesvolle workflow run:
+Start lokaal met persistente data-volumes:
 
 ```bash
-docker pull ghcr.io/<owner>/secret-agent-data-log:latest
-docker run --rm -p 8080:80 ghcr.io/<owner>/secret-agent-data-log:latest
+docker compose up -d --build
 ```
+
+Stoppen:
+
+```bash
+docker compose down
+```
+
+Volledig resetten inclusief database + uploads:
+
+```bash
+docker compose down -v
+```
+
+De app draait standaard op: http://localhost:8081
+
+Optioneel andere poort:
+
+```bash
+APP_PORT=8080 docker compose up -d --build
+```
+
+## Data-opslag
+
+In de container:
+- SQLite: `/app/data/leaks.db`
+- Uploads: `/app/uploads`
+
+In compose worden deze paden gekoppeld aan volumes:
+- `db_data`
+- `uploads_data`
