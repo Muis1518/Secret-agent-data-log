@@ -31,6 +31,14 @@ const upload = multer({
 });
 
 let db;
+const sseClients = new Set();
+
+function notifyDataChanged() {
+  sseClients.forEach(client => {
+    client.write("event: data-changed\n");
+    client.write("data: update\n\n");
+  });
+}
 
 async function initDatabase() {
   db = await open({
@@ -59,6 +67,25 @@ async function removeUploadedFiles() {
 
 app.use("/uploads", express.static(uploadsDir));
 app.use(express.static(__dirname));
+
+app.get("/api/events", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+
+  res.write("retry: 5000\n\n");
+  sseClients.add(res);
+
+  const heartbeat = setInterval(() => {
+    res.write(": keep-alive\n\n");
+  }, 25000);
+
+  req.on("close", () => {
+    clearInterval(heartbeat);
+    sseClients.delete(res);
+  });
+});
 
 app.get("/api/leaks", async (_req, res) => {
   try {
@@ -101,6 +128,7 @@ app.post("/api/leaks", upload.single("photo"), async (req, res) => {
       [slachtoffer.trim(), description.trim(), date, req.file.filename]
     );
 
+    notifyDataChanged();
     res.status(201).json({ id: result.lastID });
   } catch (error) {
     console.error(error);
@@ -115,6 +143,7 @@ app.delete("/api/leaks", async (_req, res) => {
   try {
     await db.run("DELETE FROM leaks");
     await removeUploadedFiles();
+    notifyDataChanged();
     res.json({ success: true });
   } catch (error) {
     console.error(error);

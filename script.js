@@ -3,6 +3,7 @@ const form = document.getElementById("leakForm");
 const timeline = document.getElementById("timeline");
 const ranking = document.getElementById("rankingList");
 const resetBtn = document.getElementById("resetData");
+let lastLeaksSignature = "";
 
 async function fetchJson(url, options = {}) {
   const response = await fetch(url, options);
@@ -95,12 +96,48 @@ function buildRanking(leaks) {
 
 async function loadLeaks() {
   const data = await fetchJson("/api/leaks");
+  const nextSignature = data.leaks
+    .map(leak => `${leak.id}:${leak.date}:${leak.image_url}`)
+    .join("|");
+
+  if (nextSignature === lastLeaksSignature) {
+    return;
+  }
+
+  lastLeaksSignature = nextSignature;
+
   if (timeline) {
     buildTimeline(data.leaks);
   }
   if (ranking) {
     buildRanking(data.leaks);
   }
+}
+
+function setupAutoRefresh() {
+  if (!timeline && !ranking) {
+    return;
+  }
+
+  if ("EventSource" in window) {
+    const events = new EventSource("/api/events");
+    events.addEventListener("data-changed", () => {
+      loadLeaks().catch(error => {
+        console.error(error);
+      });
+    });
+
+    events.onerror = () => {
+      // EventSource retries automatically. We keep this silent to avoid noisy alerts.
+    };
+    return;
+  }
+
+  setInterval(() => {
+    loadLeaks().catch(error => {
+      console.error(error);
+    });
+  }, 15000);
 }
 
 if (timeline || ranking) {
@@ -113,6 +150,7 @@ if (timeline || ranking) {
       timeline.appendChild(errorEl);
     }
   });
+  setupAutoRefresh();
 }
 
 if (form) {
